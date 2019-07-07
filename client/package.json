@@ -1,0 +1,9 @@
+{
+  "name": "firebase-repro",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "deploy": "firebase deploy"
+  },
+  "author": "William Dibbern"
+}

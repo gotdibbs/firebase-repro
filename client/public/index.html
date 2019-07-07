@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>CLIENT</title>
+    </head>
+    <body>
+
+        <h1>Fragment should appear below (this is a test against the "remote" server)</h1>
+        <div id="fragment-host"></div>
+
+        <script>
+        // This code needs to be hosted on a separate domain from the HTML file
+        function requestFragment() {
+            function load(url, callback) {
+                var request = new XMLHttpRequest();
+                request.open('GET', url);
+                // cannot remove this, but this is what triggers the CORS preflight as it is a non-spec header
+                request.setRequestHeader('client-activity-id', 'tracker');
+                request.send();
+                request.onerror = function (e) {
+                    alert('Error encountered: ' + JSON.stringify(e));
+                }
+                request.onload = function onload() {
+                    callback(this.response);
+                };
+            }
+
+            load('//personal-environment-d000e.firebaseapp.com/fragment.html', function onRetrieved(html) {
+                var root = document.createElement('div');
+                root.innerHTML = html;
+                document.getElementById('fragment-host').appendChild(root);
+            });
+        }
+
+        // Invoke `requestFragment` to trigger the CORS preflight
+        window.addEventListener('load', requestFragment);
+        </script>
+
+    </body>
+</html>
